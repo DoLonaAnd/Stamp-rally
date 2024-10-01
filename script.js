@@ -364,7 +364,7 @@ window.onload = () => {
     for (let i = 0; i < req.length; i++) {
         if ((req[i][0]).indexOf("word") !== -1) {
             answer = decodeURI(req[i][1]);
-            console.log(answer);
+            //console.log(answer);
             let word = req[i][0].substring(4);
             let index = word.split("-");
             state[index[0] - 1][index[1] - 1] = answer;
