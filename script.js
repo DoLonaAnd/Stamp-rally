@@ -64,6 +64,8 @@ function containsFalse(arr) {
 }
 
 function render() {
+    // renderPreparing();
+    // return;
     setCookieAnswer();
     traded = getCookie("traded");
     right = getCookie("right");
@@ -75,14 +77,14 @@ function render() {
         renderTraded();
         return;
     }
-    if (!right){
+    if (!right) {
         if (!containsFalse(state)) renderMain();
         else renderEnd();
         return;
     }
     if (right) {
         finalAnswer = getCookie("finalAnswer");
-        if(document.getElementById("inputAnswer") != null) ca();
+        if (document.getElementById("inputAnswer") != null) ca();
         else checkedAnswer();
         //renderRight();
         return;
@@ -152,11 +154,40 @@ function renderMain() {
     table.appendChild(tr1);
     table.appendChild(tr2);
     main.appendChild(table);
-    if(containsFalse(state)) renderEnd();
+
+    let orderDiv = document.createElement("div");
+    let orderH4 = document.createElement("h4");
+    let orderH4_2 = document.createElement("h4");
+    newDiv.classList.add("rampart-one-regular");
+    let orderContent = document.createTextNode("他のポスターからQRを読み込んで、");
+    let orderContent2 = document.createTextNode("文字を集めてください。");
+    orderH4.appendChild(orderContent);
+    orderH4_2.appendChild(orderContent2);
+    orderDiv.appendChild(orderH4);
+    orderDiv.appendChild(orderH4_2);
+    main.appendChild(orderDiv);
+
+    if (containsFalse(state)) renderEnd();
+}
+
+function renderPreparing() {
+    let h3 = document.createElement("h3");
+    h3.classList.add("rampart-one-regular");
+    let content = document.createTextNode("準備中");
+    h3.appendChild(content);
+    main.appendChild(h3);
+}
+
+function renderServiceEnd() {
+    let h3 = document.createElement("h3");
+    h3.classList.add("rampart-one-regular");
+    let content = document.createTextNode("サービス終了");
+    h3.appendChild(content);
+    main.appendChild(h3);
 }
 
 function renderEnd() {
-    if(!containsFalse(state)) return;
+    if (!containsFalse(state)) return;
     renderInit("main");
     // h3 と 7個のinput と 1個のボタンを配置。
     let newDiv = document.createElement("h3");
@@ -200,14 +231,18 @@ function renderEnd() {
 }
 
 async function renderRight() {
-    
+
     //console.log(right);
     if (right) {
         renderInit("main");
         // 正解画面と交換するボタンを配置。
-        let rightDiv = document.createElement("h2");
+        let rightDiv = document.createElement("h3");
+        let br = document.createElement("br");
         let rightContent = document.createTextNode("正解!!");
+        let content = document.createTextNode("景品交換は10、11月の平日昼休み、ACT412に来てください。");
         rightDiv.appendChild(rightContent);
+        rightDiv.appendChild(br);
+        rightDiv.appendChild(content);
         let newDiv = document.createElement("button");
         let newContent = document.createTextNode("交換する");
         //newDiv.onclick = "trade()";
@@ -256,8 +291,8 @@ function renderInit(parentId) {
     }
 }
 
-function getCookie(key){
-    let cookieValue = document.cookie.split("; ")//.find((row) => row.startsWith("test2="))?.split("=")[1];
+function getCookie(key) {
+    let cookieValue = document.cookie.split("; ") //.find((row) => row.startsWith("test2="))?.split("=")[1];
     for (let i = 0; i < cookieValue.length; i++) {
         cookieValue[i] = cookieValue[i].split("=");
     }
@@ -271,37 +306,37 @@ function getCookie(key){
 function checkedAnswer(answer = finalAnswer) {
     finalAnswer = answer;
     async function digestMessage(message) {
-        let msgUint8 = new TextEncoder().encode(message);
-        let hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8);
-        let hashArray = Array.from(new Uint8Array(hashBuffer));
-        let hashHex = hashArray
-            .map((b) => b.toString(16).padStart(2, "0"))
-            .join(""); // convert bytes to hex string
-        return hashHex;
-    }
-    (async () => {
-        let digestHex = await digestMessage(answer);
-        document.cookie = "finalAnswer=" + finalAnswer + "; SameSite=Strict";
-        //console.log(digestHex);
-        if (digestHex != "9516331514b51d31a35e85d507d2884b34813386e07ed3fe002f981fe547b4e5") {
-            right = false
-            return right;
-        };
-        right = true;
-        document.cookie = "right=" + right + "; SameSite=Strict";
-        renderRight();
-        //console.log(right, fraud, traded, finalAnswer);
-    })();
+            let msgUint8 = new TextEncoder().encode(message);
+            let hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8);
+            let hashArray = Array.from(new Uint8Array(hashBuffer));
+            let hashHex = hashArray
+                .map((b) => b.toString(16).padStart(2, "0"))
+                .join(""); // convert bytes to hex string
+            return hashHex;
+        }
+        (async () => {
+            let digestHex = await digestMessage(answer);
+            document.cookie = "finalAnswer=" + finalAnswer + "; SameSite=Strict";
+            //console.log(digestHex);
+            if (digestHex != "9516331514b51d31a35e85d507d2884b34813386e07ed3fe002f981fe547b4e5") {
+                right = false
+                return right;
+            };
+            right = true;
+            document.cookie = "right=" + right + "; SameSite=Strict";
+            renderRight();
+            //console.log(right, fraud, traded, finalAnswer);
+        })();
     return right;
 }
 
 function setCookieAnswer() {
-    let cookieValue = document.cookie.split("; ")//.find((row) => row.startsWith("test2="))?.split("=")[1];
+    let cookieValue = document.cookie.split("; ") //.find((row) => row.startsWith("test2="))?.split("=")[1];
     for (let i = 0; i < cookieValue.length; i++) {
         cookieValue[i] = cookieValue[i].split("=");
     }
     for (let i = 0; i < cookieValue.length; i++) {
-        if((cookieValue[i][0]).indexOf("word") !== -1) {
+        if ((cookieValue[i][0]).indexOf("word") !== -1) {
             let word = cookieValue[i][0].substring(4);
             let index = word.split("-");
             state[index[0] - 1][index[1] - 1] = cookieValue[i][1];
@@ -310,7 +345,7 @@ function setCookieAnswer() {
 }
 
 function clearCookie() {
-    let cookieValue = document.cookie.split("; ")//.find((row) => row.startsWith("test2="))?.split("=")[1];
+    let cookieValue = document.cookie.split("; ") //.find((row) => row.startsWith("test2="))?.split("=")[1];
     for (let i = 0; i < cookieValue.length; i++) {
         cookieValue[i] = cookieValue[i].split("=");
     }
@@ -328,11 +363,12 @@ window.onload = () => {
     let req = dealRequest();
     for (let i = 0; i < req.length; i++) {
         if ((req[i][0]).indexOf("word") !== -1) {
-            answer = req[i][1];
+            answer = decodeURI(req[i][1]);
+            console.log(answer);
             let word = req[i][0].substring(4);
             let index = word.split("-");
-            state[index[0] - 1][index[1] - 1] = req[i][1];
-            document.cookie = `${req[i][0]}=${req[i][1]}; SameSite=Strict`;
+            state[index[0] - 1][index[1] - 1] = answer;
+            document.cookie = `${req[i][0]}=${answer}; SameSite=Strict`;
         }
     }
     render();
