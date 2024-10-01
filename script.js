@@ -64,8 +64,8 @@ function containsFalse(arr) {
 }
 
 function render() {
-    // renderPreparing();
-    // return;
+    renderServiceEnd();
+    return;
     setCookieAnswer();
     traded = getCookie("traded");
     right = getCookie("right");
