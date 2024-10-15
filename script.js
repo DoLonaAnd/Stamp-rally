@@ -340,7 +340,7 @@ function setCookieAnswer() {
         if ((cookieValue[i][0]).indexOf("word") !== -1) {
             let word = cookieValue[i][0].substring(4);
             let index = word.split("-");
-            state[index[0] - 1][index[1] - 1] = cookieValue[i][1];
+            state[index[0] - 1][index[1] - 1] = decodeURI(cookieValue[i][1]);
         }
     }
 }
@@ -364,17 +364,13 @@ window.onload = () => {
     let req = dealRequest();
     for (let i = 0; i < req.length; i++) {
         if ((req[i][0]).indexOf("word") !== -1) {
-            answer = decodeURI(req[i][1]);
+            answer = /*decodeURI*/(req[i][1]);
             // console.log(answer);
             let word = req[i][0].substring(4);
             let index = word.split("-");
             state[index[0] - 1][index[1] - 1] = answer; // <- こいつが悪い。<- ごめんね。
-            let cookiess = `${req[i][0]}=${state[index[0] - 1][index[1] - 1]}; SameSite=Strict expires=Wed, 29 Dec 2004 13:00:00 GMT`;
-            alert(cookiess);
-            document.cookie = cookiess;
-            // document.cookie = `${req[i][0]}=${state[index[0] - 1][index[1] - 1]}; SameSite=Strict expires=Wed, 29 Dec 2004 13:00:00 GMT`;
+            document.cookie = `${req[i][0]}=${state[index[0] - 1][index[1] - 1]}; SameSite=Strict expires=Wed, 29 Dec 2004 13:00:00 GMT`;
             // こいつが悪い。
-            alert(document.cookie);
         }
     }
     render();
