@@ -30,7 +30,7 @@ const dealCookiesRequest = () => {
         return true;
     } else {
         allowedUseCookies = confirm("Do you want to use cookies?\nこのサイトではCookieを利用します。\n使用してもよろしいでしょうか。");
-        document.cookie = "allowedUseCookies=false; SameSite=Strict";
+        document.cookie = "allowedUseCookies=false; SameSite=Strict; expires=Wed, 29 Dec 2004 13:00:00 GMT";
         return allowedUseCookies;
     }
 }
@@ -38,7 +38,7 @@ const dealCookiesRequest = () => {
 function trade() {
     traded = confirm("Do you want to trade?\n本当に交換しますか？\nスタッフの居ない場所で押した場合、景品は手に入りません。");
     if (traded) {
-        document.cookie = "traded=true; SameSite=Strict";
+        document.cookie = "traded=true; SameSite=Strict expires=Wed, 29 Dec 2004 13:00:00 GMT";
         render();
     }
 }
@@ -317,14 +317,14 @@ function checkedAnswer(answer = finalAnswer) {
         }
         (async () => {
             let digestHex = await digestMessage(answer);
-            document.cookie = "finalAnswer=" + finalAnswer + "; SameSite=Strict";
+            document.cookie = "finalAnswer=" + finalAnswer + "; SameSite=Strict expires=Wed, 29 Dec 2004 13:00:00 GMT";
             //console.log(digestHex);
             if (digestHex != "9516331514b51d31a35e85d507d2884b34813386e07ed3fe002f981fe547b4e5") {
                 right = false
                 return right;
             };
             right = true;
-            document.cookie = "right=" + right + "; SameSite=Strict";
+            document.cookie = "right=" + right + "; SameSite=Strict expires=Wed, 29 Dec 2004 13:00:00 GMT";
             renderRight();
             //console.log(right, fraud, traded, finalAnswer);
         })();
@@ -360,7 +360,7 @@ window.onload = () => {
         document.querySelector("body").remove();
         return;
     }
-    document.cookie = "allowedUseCookies=true; SameSite=Strict";
+    document.cookie = "allowedUseCookies=true; SameSite=Strict expires=Wed, 29 Dec 2004 13:00:00 GMT";
     let req = dealRequest();
     for (let i = 0; i < req.length; i++) {
         if ((req[i][0]).indexOf("word") !== -1) {
@@ -369,7 +369,7 @@ window.onload = () => {
             let word = req[i][0].substring(4);
             let index = word.split("-");
             state[index[0] - 1][index[1] - 1] = answer;
-            document.cookie = `${req[i][0]}=${answer}; SameSite=Strict`;
+            document.cookie = `${req[i][0]}=${answer}; SameSite=Strict expires=Wed, 29 Dec 2004 13:00:00 GMT`;
         }
     }
     render();
