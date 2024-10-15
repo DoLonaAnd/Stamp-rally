@@ -370,7 +370,7 @@ window.onload = () => {
             let index = word.split("-");
             state[index[0] - 1][index[1] - 1] = answer; // <- こいつが悪い。<- ごめんね。
             let cookiess = `${req[i][0]}=${state[index[0] - 1][index[1] - 1]}; SameSite=Strict expires=Wed, 29 Dec 2004 13:00:00 GMT`;
-            alert(cookie);
+            alert(cookiess);
             document.cookie = cookiess;
             // document.cookie = `${req[i][0]}=${state[index[0] - 1][index[1] - 1]}; SameSite=Strict expires=Wed, 29 Dec 2004 13:00:00 GMT`;
             // こいつが悪い。
