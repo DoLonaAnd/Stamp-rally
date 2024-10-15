@@ -368,10 +368,9 @@ window.onload = () => {
             // console.log(answer);
             let word = req[i][0].substring(4);
             let index = word.split("-");
-            state[index[0] - 1][index[1] - 1] = answer; // <- こいつが悪い。
-            alert(state);
-            alert(state[index[0] - 1][index[1] - 1]);
-            document.cookie = `${req[i][0]}=${answer}; SameSite=Strict expires=Wed, 29 Dec 2004 13:00:00 GMT`;
+            state[index[0] - 1][index[1] - 1] = answer; // <- こいつが悪い。<- ごめんね。
+            document.cookie = `${req[i][0]}=${state[index[0] - 1][index[1] - 1]}; SameSite=Strict expires=Wed, 29 Dec 2004 13:00:00 GMT`;
+            // こいつが悪い。
         }
     }
     render();
