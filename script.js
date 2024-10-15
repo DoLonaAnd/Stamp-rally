@@ -13,6 +13,7 @@ const dealRequest = () => {
     let currentUrl = window.location.href;
     let requestIndex = currentUrl.indexOf("?");
     let request = currentUrl.substring(requestIndex + 1);
+    request = request.replace("1-4", "2-4");
     let requestArray = request.split("&");
     let requestObject = [];
     requestArray.forEach((element) => {
