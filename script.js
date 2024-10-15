@@ -14,7 +14,6 @@ const dealRequest = () => {
     let requestIndex = currentUrl.indexOf("?");
     let request = currentUrl.substring(requestIndex + 1);
     request = request.replace("1-4", "2-4");
-    alert(request);
     let requestArray = request.split("&");
     let requestObject = [];
     requestArray.forEach((element) => {
@@ -366,12 +365,13 @@ window.onload = () => {
     for (let i = 0; i < req.length; i++) {
         if ((req[i][0]).indexOf("word") !== -1) {
             answer = decodeURI(req[i][1]);
-            alert(answer);
             // console.log(answer);
             let word = req[i][0].substring(4);
             let index = word.split("-");
             state[index[0] - 1][index[1] - 1] = answer;
+            alert([index[0] - 1][index[1] - 1]);
             document.cookie = `${req[i][0]}=${answer}; SameSite=Strict expires=Wed, 29 Dec 2004 13:00:00 GMT`;
+            alert(document.cookie);
         }
     }
     render();
